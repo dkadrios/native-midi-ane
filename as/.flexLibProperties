@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<flexLibProperties includeAllClasses="true" useMultiPlatformConfig="false" version="3">
+  <includeClasses>
+    <classEntry path="com.nebiru.extensions.midi.INativeMIDI"/>
+    <classEntry path="com.nebiru.extensions.midi.NativeMIDI"/>
+    <classEntry path="com.nebiru.extensions.midi.NativeMidiEvent"/>
+  </includeClasses>
+  <includeResources/>
+  <namespaceManifests/>
+</flexLibProperties>

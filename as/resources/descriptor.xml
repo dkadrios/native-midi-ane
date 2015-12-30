@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension xmlns="http://ns.adobe.com/air/extension/16.0">
+	<id>com.nebiru.extensions.midi.NativeMIDI</id>
+	<versionNumber>2.0.0</versionNumber>
+	<platforms>
+		<platform name="Windows-x86">
+			<applicationDeployment>
+				<nativeLibrary>libNativeMIDIWin.dll</nativeLibrary>
+				<initializer>initializer</initializer>
+				<finalizer>finalizer</finalizer>
+			</applicationDeployment>
+		</platform>
+		<platform name="MacOS-x86">
+		<applicationDeployment>
+			<nativeLibrary>NativeMIDIMac.framework</nativeLibrary>
+			<initializer>initializer</initializer>
+			<finalizer>finalizer</finalizer>
+		</applicationDeployment>
+	</platform>
+	</platforms>
+</extension>

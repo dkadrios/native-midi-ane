@@ -1,0 +1,1 @@
+adt -package -target ane NativeMIDI.ane descriptor.xml -swc NativeMIDI.swc -platform Windows-x86 library.swf libNativeMIDIWin.dll

@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<componentPackage>
+	<component id="NativeMIDI" class="com.nebiru.extensions.midi.NativeMIDI"/>
+</componentPackage>

@@ -1,0 +1,103 @@
+<?xml version="1.0" ?>
+<project default="package">
+	<property name="project-name" value="NativeMIDI"/>
+	<property name="framework-name" value="NativeMIDIMac"/>
+	<property name="dll-name" value="libNativeMIDIWin.dll"/>
+
+	<property name="OPTIMIZE" value="true"/>
+	<property name="DEBUG" value="true"/>
+
+	<property name="src.dir" value="${basedir}/src"/>
+	<property name="out.dir" value="${basedir}/bin"/>
+
+	<property name="KEYSTORE"  value="${basedir}/resources/Nebiru_Air_Cert.p12" />
+	<property name="STOREPASS" value="torgo" />
+	<echo message="KEYSTORE=${KEYSTORE}"/>
+
+	<condition property="FLEX_HOME"
+		value="C:/Program Files/Adobe/Adobe Flash Builder 4.7 (64 Bit)/sdks/4.14.0"
+		else="/Applications/Adobe Flash Builder 4.7/sdks/4.14.1">
+		<os family="windows" />
+	</condition>
+	<echo message="FLEX_HOME=${FLEX_HOME}"/>
+
+	<condition property="flex.acompc"
+		value="${FLEX_HOME}/bin/acompc.bat"
+		else="${FLEX_HOME}/bin/acompc">
+		<os family="windows" />
+	</condition>
+	<echo message="flex.acompc=${flex.acompc}"/>
+
+	<property name="adt" value="${FLEX_HOME}/lib/adt.jar"/>
+
+	<target name="clean" description="Clean the project">
+		<delete dir="${out.dir}" failonerror="false"/>
+	</target>
+
+	<target name="init" description="initialize the project" depends="clean">
+		<mkdir dir="${out.dir}"/>
+	</target>
+
+	<target name="compile" description="Compile the SWC file" depends="init">
+		<echo message="Compile Initial ${project-name}.swc"/>
+		<exec executable="${flex.acompc}" failonerror="true">
+			<arg line="-namespace http://www.nebiru.com/2012 ${src.dir}/manifest.xml"/>
+			<arg line="-include-namespaces http://www.nebiru.com/2012"/>
+			<arg line="-output='${out.dir}/${project-name}.swc'"/>
+			<arg line="-swf-version=27"/>
+			<arg line="-locale=en_US"/>
+			<arg line="-debug='${DEBUG}'"/>
+			<arg line="-optimize='${OPTIMIZE}'"/>
+			<arg line="-source-path='${src.dir}'"/>
+			<arg line="-external-library-path+='${FLEX_HOME}/frameworks/libs/air'"/>
+			<arg line="-external-library-path+='${FLEX_HOME}/frameworks/libs'"/>
+			<arg line="-external-library-path+='${FLEX_HOME}/frameworks/locale'"/>
+		</exec>
+	</target>
+
+	<target name="package" depends="compile">
+		<echo message="Creating build-ane folder."/>
+		<delete dir="${basedir}/build-ane" />
+		<mkdir dir="${basedir}/build-ane" />
+		<copy todir="${basedir}/build-ane" failonerror="true">
+			<fileset file="${out.dir}/${project-name}.swc"/>
+			<fileset file="${basedir}/../../NativeMIDIWin/release/${dll-name}" />
+			<fileset dir="${basedir}/resources/release"/>
+			<fileset file="${basedir}/resources/descriptor.xml"/>
+			<fileset file="${basedir}/resources/Nebiru_Air_Cert.p12"/>
+		</copy>
+		<echo message="Extracting contents of swc"/>
+		<unzip src="${out.dir}/${project-name}.swc" dest="${basedir}/build-ane" />
+		<echo message="Building ane."/>
+		<java jar="${adt}" fork="true" dir="${basedir}/build-ane" failonerror="true">
+			<arg value="-package"/>
+			<arg value="-storetype"/>
+			<arg value="pkcs12"/>
+			<arg value="-storepass"/>
+			<arg value="torgo"/>
+			<arg value="-keystore"/>
+			<arg value="Nebiru_Air_Cert.p12"/>
+			<arg value="-tsa" />
+			<arg value="none" />
+			<arg value="-target"/>
+			<arg value="ane"/>
+			<arg value="${project-name}.ane"/>
+			<arg value="descriptor.xml"/>
+			<arg value="-swc"/>
+			<arg value="${project-name}.swc"/>
+			<arg value="-platform"/>
+			<arg value="Windows-x86"/>
+			<arg value="library.swf"/>
+			<arg value="${dll-name}"/>
+			<arg value="-platform"/>
+			<arg value="MacOS-x86"/>
+			<arg value="library.swf"/>
+			<arg value="${framework-name}.framework" />
+		</java>
+
+		<copy todir="../build">
+			<fileset file="${basedir}/build-ane/${project-name}.ane"/>
+		</copy>
+		<delete dir="${basedir}/build-ane"/>
+	</target>
+</project>
