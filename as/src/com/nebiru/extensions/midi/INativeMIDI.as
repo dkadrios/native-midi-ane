@@ -13,7 +13,7 @@ package com.nebiru.extensions.midi{
 		//----------------------------------------------------------------------
 		function getInterfaceList() : String;
 		//----------------------------------------------------------------------
-		function isSupported() : Boolean;
+		//function isSupported() : Boolean;
 		//----------------------------------------------------------------------
 	};
 }

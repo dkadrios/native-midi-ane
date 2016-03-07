@@ -2,8 +2,8 @@
 <project default="package">
 	<echo message="Starting up.  basedir = ${basedir}" />
 	<property name="project-name" value="NativeMIDI" />
-	<property name="framework-name" value="NativeMIDIMac.framework" />
-	<property name="dll-name" value="libNativeMIDIWin.dll" />
+	<property name="framework-name" value="NativeMIDI.framework" />
+	<!--<property name="dll-name" value="libNativeMIDIWin.dll" />-->
 
 	<property name="OPTIMIZE" value="true" />
 	<property name="DEBUG" value="true" />
@@ -60,13 +60,14 @@
 	</target>
 
 	<target name="package" depends="compile">
-		<echo message="Creating build-ane folder. ${basedir}/resources/Release/${framework-name}" />
+		<echo message="Creating build-ane folder. ${basedir}/../../NativeMIDIMac/src/Release/${framework-name}" />
 		<delete dir="${basedir}/build-ane" />
 		<mkdir dir="${basedir}/build-ane" />
 		<copy todir="${basedir}/build-ane" failonerror="true">
 			<fileset file="${out.dir}/${project-name}.swc" />
-			<fileset file="${basedir}/../../nativemidiwin/release/${dll-name}" />
-			<fileset dir="${basedir}/resources/Release" />
+			<!--<fileset file="${basedir}/../../nativemidiwin/release/${dll-name}" />-->
+			<!--<fileset dir="${basedir}/resources/Release" />-->
+			<fileset dir="${basedir}/../../NativeMIDIMac/src/Release" />
 			<fileset file="${basedir}/resources/descriptor.xml" />
 			<fileset file="${basedir}/resources/Nebiru_Air_Cert.p12" />
 		</copy>
@@ -89,10 +90,10 @@
 			<arg value="descriptor.xml" />
 			<arg value="-swc" />
 			<arg value="${project-name}.swc" />
-			<arg value="-platform" />
+			<!--<arg value="-platform" />
 			<arg value="Windows-x86" />
 			<arg value="library.swf" />
-			<arg value="${dll-name}" />
+			<arg value="${dll-name}" />-->
 			<arg value="-platform" />
 			<arg value="MacOS-x86-64" />
 			<arg value="library.swf" />
@@ -102,6 +103,6 @@
 		<copy todir="../build">
 			<fileset file="${basedir}/build-ane/${project-name}.ane" />
 		</copy>
-		<delete dir="${basedir}/build-ane" />
+		<!--<delete dir="${basedir}/build-ane" />-->
 	</target>
 </project>
